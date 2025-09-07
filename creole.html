@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tès Kalite Sètitè Wayòm nan - Kreyòl Ayisyen</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #1e3a8a;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+        
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            color: #2563eb;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .back-home:hover {
+            color: #1e40af;
+        }
+        
+        .question {
+            margin-bottom: 25px;
+            display: none;
+        }
+        
+        .question.active {
+            display: block;
+        }
+        
+        .question h3 {
+            color: #1e3a8a;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .options {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .option {
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        .option:hover {
+            border-color: #2563eb;
+            background: #dbeafe;
+            transform: translateY(-2px);
+        }
+        
+        .option.selected {
+            border-color: #2563eb;
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            color: white;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        .progress {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+        
+        .progress-text {
+            text-align: center;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        .results {
+            display: none;
+            text-align: center;
+        }
+        
+        .results.active {
+            display: block;
+        }
+        
+        .result-type {
+            font-size: 2.5em;
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .result-content {
+            text-align: left;
+            margin: 20px 0;
+        }
+        
+        .result-section {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #2563eb;
+        }
+        
+        .result-section h4 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+        
+        .score-breakdown {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #2563eb;
+        }
+        
+        .score-breakdown h4 {
+            color: #1e3a8a;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .score-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        
+        .score-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 5px;
+            border-left: 3px solid #2563eb;
+        }
+        
+        .score-type {
+            font-weight: 500;
+            color: #1e3a8a;
+        }
+        
+        .score-percentage {
+            font-weight: bold;
+            color: #2563eb;
+        }
+        
+        .tied-results {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .reference-note {
+            background: #e6f3ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #2196f3;
+            font-style: italic;
+            color: #555;
+        }
+        
+        .dashboard-contribution {
+            background: #f0fdf4;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #10b981;
+            text-align: center;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <a href="index.html" class="back-home">← Tounen nan Chwa Lang</a>
+            
+            <div class="header">
+                <h1>Tès Kalite Sètitè Wayòm nan</h1>
+                <p class="subtitle">Dekouvri kijan w ka kontribye nan yon legliz oswa kominote k ap pwospère</p>
+            </div>
+            
+            <div id="quiz-container">
+                <div class="progress">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+                <div class="progress-text">
+                    <span id="current-question">1</span> sou <span id="total-questions">21</span>
+                </div>
+                
+                <!-- Questions will be generated here -->
+                <div id="questions"></div>
+                
+                <div class="navigation">
+                    <button class="btn btn-primary" id="prev-btn" onclick="previousQuestion()" disabled>Anvan an</button>
+                    <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()" disabled>Apre a</button>
+                    <button class="btn btn-primary" id="submit-btn" onclick="calculateResults()" style="display: none;">Jwenn Rezilta Mwen</button>
+                </div>
+            </div>
+            
+            <div id="results-container" class="results">
+                <a href="index.html" class="back-home">← Tounen nan Chwa Lang</a>
+                <div id="results-content"></div>
+                <button class="btn btn-primary" onclick="restartQuiz()" style="margin-top: 20px;">Pran Tès la Ankò</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Google Sheets Configuration - YOU NEED TO REPLACE THIS URL
+        const GOOGLE_SHEETS_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+        
+        const questions = [
+            {
+                question: "Legliz ou a vle ede kominote a. Kisa ou panse premye?",
+                options: [
+                    "Kisa ki gwo objektif nou an? Kijan sa a kòde ak sa nou vle fè long term?",
+                    "Ki moun nou pa t' envite dènyèman? Ki moun ki ta ka santi yo kite deyò?",
+                    "Kisa moun yo bezwen aprann pou sa a travay?",
+                    "Sa ap bon anpil pou tout moun!",
+                    "Kilè nou bezwen fini sa a? Ki moun k ap fè sa?",
+                    "Kisa nou gen? Kisa nou toujou bezwen?",
+                    "Ki kote n ap mete bagay yo? Ki materyèl nou bezwen?"
+                ]
+            },
+            {
+                question: "De moun nan ekip ou a ap diskite. Kisa ou vle fè?",
+                options: [
+                    "Pale sou gwo foto a ak sa nou tout vle",
+                    "Gade kijan tou de moun yo ye apre reyinyon an",
+                    "Klèsi nenpòt konfizyon sou ki moun k ap fè sa",
+                    "Fè yon ti mo pou rigole oswa di yon bagay pozitif",
+                    "Pran yon ti poz ak fè yon plan ki klè",
+                    "Ede rezoud nenpòt pwoblèm lajan oswa founiti",
+                    "Jwenn yon solisyon ki travay kounye a"
+                ]
+            },
+            {
+                question: "Ou ale nan yon konferans travay. Ki sesyon ki sanble bon?",
+                options: [
+                    "Fè yon Plan 10-An pou Travay Ou a",
+                    "Konstwi pi Bon Relasyon yo",
+                    "Kijan pou Pale pou Moun yo Konprann",
+                    "Rete Pozitif lè Bagay yo Di",
+                    "Fè Pwojè yo Fini nan Tan yo",
+                    "Kijan pou Leve Lajan nan Bon Jan",
+                    "Atèlye ak Men: Prepare Espas Ou a"
+                ]
+            },
+            {
+                question: "Apre legliz nan dimanch, ou toujou:",
+                options: [
+                    "Reflechi sou nouvo ide ou tande yo",
+                    "Tcheke moun ki te sanble yo kè rete oswa tris",
+                    "Pale sou sa prèch la vle di nan lavi reyèl",
+                    "Di yon bagay pozitif bay lòt yo",
+                    "Reflechi sou kijan tout bagay te pase byen",
+                    "Remake sa moun yo ta ka bezwen ede ak",
+                    "Ede netwaye san yo pa mande ou"
+                ]
+            },
+            {
+                question: "Lè ou planifye yon vwayaj fanmi, ou:",
+                options: [
+                    "Chèche kote yo ak reflechi sou plezi ou pral genyen",
+                    "Asire tout moun jwenn sa yo vle",
+                    "Jwenn aktivite yo ak planifye sa ou pral aprann",
+                    "Konsantre sou fè bon souvni pou tout moun",
+                    "Fè orè detaye ak plan rechanj yo",
+                    "Fikse bidjè a ak jwenn bon pri yo",
+                    "Rezève tout bagay ak fè lis bagay pou ou pote yo"
+                ]
+            },
+            {
+                question: "Nan yon resepsyon kote ou pa konnen moun yo, ou:",
+                options: [
+                    "Pataje istwa sou pwojè enteresan yo ou ap travay sou yo",
+                    "Mande moun yo sou fanmi yo ak lavi yo",
+                    "Vin ap eksplike bagay ou konnen yo",
+                    "Asire moun trankil yo santi yo nan kominote a",
+                    "Ede mèt kay la òganize aktivite yo",
+                    "Ofè pou ou pote yon bagay oswa ede peye",
+                    "Ede sèvi manje oswa prepare bagay yo"
+                ]
+            },
+            {
+                question: "Wikend pèfè ou a se:",
+                options: [
+                    "Planifye yon bagay enteresan pou nan fiti a",
+                    "Pase bon tan ak fanmi oswa zanmi yo",
+                    "Aprann yon bagay nouvo",
+                    "Fè yon bagay ki amizan ki fè ou kontan",
+                    "Netwaye espas ou a oswa planifye semèn k ap vini an",
+                    "Travay sou yon bagay ki ede lòt yo",
+                    "Konstwi oswa ranje yon bagay ak men ou yo"
+                ]
+            },
+            {
+                question: "Lè yon zanmi di ou sou yon pwoblèm, ou toujou di:",
+                options: [
+                    "Èske ou te reflechi sou eseye yon bagay konplètman diferan?",
+                    "Kijan ou santi ou sou tout bagay sa yo?",
+                    "Kite m ede ou konprann sa k ap pase reyèlman",
+                    "Sa a di, men mwen panse bagay yo pral vin pi bon",
+                    "Kisa ou te eseye? Kisa ou ta dwe fè aprè sa?",
+                    "Èske mwen ka ede? Èske ou bezwen anyen?",
+                    "Ou vle mwen vin lakay ou ede ou rezoud sa a?"
+                ]
+            },
+            {
+                question: "Nan pwojè gwoup yo, moun yo sonje ou kòm moun ki:",
+                options: [
+                    "Te gen ide kreyatè yo",
+                    "Te asire tout moun te santi yo nan kominote a",
+                    "Te eksplike bagay yo lè moun yo te gen konfizyon",
+                    "Te kenbe moral tout moun yo wo lè bagay yo te vin di",
+                    "Te swiv dat yo ak asire bagay yo te fèt",
+                    "Te jwenn fason yo pou jwenn lajan oswa founiti",
+                    "Te fè anpil nan travay reyèl la"
+                ]
+            },
+            {
+                question: "Lè ou wè yon moun k ap viv nan lari, ou panse premye:",
+                options: [
+                    "Gen dwe gen yon pi bon jan pou rezoud pwoblèm sa a",
+                    "Mwen mande kisa ki te rive yo",
+                    "Mwen ta renmen moun yo konprann kijan sa a di",
+                    "Mwen espere yo konnen yo gen valè ak bagay yo ka vin pi bon",
+                    "Ki ede ki genyen? Kijan yo ka jwenn li?",
+                    "Mwen ta dwe bay yo yon bagay",
+                    "Petèt mwen ka ede yo ak yon bagay kounye a"
+                ]
+            },
+            {
+                question: "Film oswa liv prefere ou yo toujou:",
+                options: [
+                    "Montre moun k ap kouri dèyè gwo rèv oswa chanje mond lan",
+                    "Konsantre sou relasyon ak koneksyon yo",
+                    "Montre ou yon bagay nouvo",
+                    "Gen fen kontan ak espwa",
+                    "Gen bon istwa ki tout bagay fè sans",
+                    "Montre moun k ap ede lòt yo",
+                    "Montre moun k ap rezoud pwoblèm yo lè yo pran aksyon"
+                ]
+            },
+            {
+                question: "Lè ou kòmanse yon nouvo travay, ou:",
+                options: [
+                    "Mande sou gwo objektif ak plan konpayi an",
+                    "Eseye konnen kòlèg travay ou yo kòm moun",
+                    "Vle konprann kijan tout bagay travay",
+                    "Konsantre sou konstwi bon relasyon yo",
+                    "Mande pou deskripsyon travay ki klè",
+                    "Chèche fason pou ou fè pi plis pase sèlman travay ou",
+                    "Kòmanse ak kòmanse travay sou travay reyèl yo"
+                ]
+            },
+            {
+                question: "Zanmi ou yo di ou bon nan:",
+                options: [
+                    "Wè posibilite lòt yo rate",
+                    "Fè moun yo santi yo gen moun ki pran swen yo",
+                    "Fè sijè di yo fasil pou konprann",
+                    "Ede moun yo santi yo pi bon sou tèt yo",
+                    "Kenbe bagay yo ap mache byen",
+                    "Jenerezite ak tan ak lajan ou",
+                    "Fè bagay yo byen ak vit"
+                ]
+            },
+            {
+                question: "Kisa ki deranje ou pi plis nan gwoup yo?",
+                options: [
+                    "Lè moun yo sèlman pale sou ti detay yo, pa gwo foto a",
+                    "Lè moun yo sanble yo kite deyò oswa dekonekte",
+                    "Lè gen konfizyon ki ta ka ranje",
+                    "Lè bagay yo vin negatif oswa moun yo pèdi espwa",
+                    "Lè bagay yo sal oswa pa gen plan ki klè",
+                    "Lè gen bezwen ki pa gen moun k ap satisfè yo",
+                    "Lè gen twòp pale ak pa ase aksyon"
+                ]
+            },
+            {
+                question: "Nan yon fèt kominote, ou ta renmen:",
+                options: [
+                    "Planifye evenman ane k ap vini an ak reflechi sou amelyorasyon yo",
+                    "Akeyi vizitè yo ak ede yo santi yo lakay yo",
+                    "Dirije yon klas oswa montre moun yo kijan pou fè yon bagay",
+                    "Ankouraje volontè yo ak selebre viktwa yo",
+                    "Òganize volontè yo ak jere lojistik",
+                    "Travay nan tèt kote don yo oswa jwenn patwon yo",
+                    "Prepare tèt yo oswa ranje pwoblèm teknik yo"
+                ]
+            },
+            {
+                question: "Lè ou gen pou ou pran yon gwo desizyon, ou:",
+                options: [
+                    "Reflechi sou rèv ak objektif long term ou yo",
+                    "Reflechi sou kijan li afekte moun ou renmen yo",
+                    "Fè rechèch ak mande moun entèlijan yo konsèy",
+                    "Eseye rete pozitif ak chèche bon rezilta yo",
+                    "Fè lis bagay bon ak move yo",
+                    "Reflechi sou lajan ak sa ou pral bezwen",
+                    "Konsantre sou sa ou reyèlman ka fè"
+                ]
+            },
+            {
+                question: "Reyinyon ekip ideal ou a ta:",
+                options: [
+                    "Konsantre sou reve sou fiti a ak fikse gwo objektif yo",
+                    "Gen tan pou tout moun pataje kijan yo ye",
+                    "Gen yon bagay nouvo pou aprann ansanm",
+                    "Kite tout moun santi yo ankouraje",
+                    "Gen yon plan ki klè ak fè bagay espesifik yo",
+                    "Jwenn fason ekip la ka ede lòt yo oswa sipòte yon kòz",
+                    "Fini ak etap aksyon ki klè ak travay pou tout moun"
+                ]
+            },
+            {
+                question: "Lè ou wè yon pwoblèm nan kominote ou a, ou:",
+                options: [
+                    "Reflechi sou yon nouvo solisyon ki ka chanje tout bagay",
+                    "Rive sou moun ki blese pa pwoblèm nan",
+                    "Fè rechèch pou konprann poukisa sa k ap pase a",
+                    "Jwenn fason pou pote espwa bay moun k ap lite yo",
+                    "Fè yon plan etap-pa-etap pou rezoud pwoblèm nan",
+                    "Chèche fason pou bay lajan, tan, oswa founiti",
+                    "Kòmanse travay sou solisyon yo imedyatman"
+                ]
+            },
+            {
+                question: "Moun yo souvan vin jwenn ou lè yo bezwen:",
+                options: [
+                    "Yon moun pou ede yo reflechi diferanman",
+                    "Yon moun pou koute ak bay sipò emosyonèl",
+                    "Enfòmasyon difisil eksplike nan fason senp",
+                    "Motivasyon oswa konfyans",
+                    "Ede òganize reflesyon yo oswa plan yo",
+                    "Ede jwenn resous oswa fè koneksyon yo",
+                    "Ede ak men yo pou fè yon bagay"
+                ]
+            },
+            {
+                question: "Nan tan lib ou, ou renmen aktivite ki:",
+                options: [
+                    "Gen kreyativite oswa eksplore nouvo ide yo",
+                    "Konekte ou ak fanmi, zanmi, oswa kominote",
+                    "Kite ou aprann nouvo konpetans oswa vin pi bon nan yon bagay",
+                    "Pote kè kontan bay ou ak lòt yo",
+                    "Ede ou òganize oswa kreye estrikti",
+                    "Kite ou ede kòz ou renmen yo",
+                    "Gen konstwi, kreye, oswa fini pwojè reyèl yo"
+                ]
+            },
+            {
+                question: "Lè ou gade dèyè nan lavi ou, ou santi ou pi fyè lè ou:",
+                options: [
+                    "Enspire lòt yo pou fè yon bagay ki gen siginifikasyon",
+                    "Fè yon gwo diferans nan lavi yon moun lè w pran swen",
+                    "Ede moun yo konprann yon bagay enpòtan",
+                    "Ankouraje yon moun nan yon moman difisil",
+                    "Òganize yon bagay konplike ak siksè",
+                    "Bay resous ki fè yon reyèl diferans",
+                    "Fini yon bagay konkrè ak k ap dire"
+                ]
+            }
+        ];
+
+        const servantTypes = {
+            A: {
+                name: "Vizyonè",
+                definition: "Étincelle kominote a, toujou ap gade devan ak imajine sa ki posib.",
+                strengths: "Bay vizyon, enspire lòt yo, mennen planifikasyon long term, brainstorm travay ak kominote a.",
+                thrive: "Lè yo bay espas pou reve, enfliyanse direksyon, ak enspire.",
+                differentiator: "Bay direksyon ak poukisa a, pa detay yo — diferan ak Òganizè a."
+            },
+            B: {
+                name: "Gadò",
+                definition: "Kè kominote a, ki pran swen moun yo ak tout kè yo.",
+                strengths: "Konstwi sans yo gen kote yo, tcheke manm yo, asire pèsòn pa kite deyò.",
+                thrive: "Nan kote ki gen relasyon kote yo ka nouri ak sipòte.",
+                differentiator: "Bay swen estab sou tan, diferan ak Ankourajè a ki bay gwo enèji yo."
+            },
+            C: {
+                name: "Pwofesè",
+                definition: "Renmen fè bagay konplike yo klè, ekipe lòt yo nan konesans.",
+                strengths: "Mennen etid yo, eksplike Ekriti a, kreye zouti fòmasyon.",
+                thrive: "Nan anviwonman ansèyman kote yo ka klarifye ak pataje konesans.",
+                differentiator: "Tradwi ide yo nan leson yo, diferan ak Vizyonè a ki bay direksyon."
+            },
+            D: {
+                name: "Ankourajè",
+                definition: "Motivatè gwoup la, ki kenbe enèji a wo ak moun yo gen espwa.",
+                strengths: "Leve lòt yo, ogmante moral la, gaye pozitivite.",
+                thrive: "Nan kote ki konsantre sou moun kote yo ka motive ak konfime.",
+                differentiator: "Bay gwo enèji emosyonèl, diferan ak Gadò a ki bay swen k ap kontinye."
+            },
+            E: {
+                name: "Òganizè",
+                definition: "Planifikatè ak kòòdinatè ki fè tout bagay mache byen.",
+                strengths: "Jere detay yo, kòòdone volontè yo, asire yo egzekite san pwoblèm.",
+                thrive: "Nan anviwonman ki gen estrikti ak lis ak delè yo.",
+                differentiator: "Kreye sistèm yo, diferan ak Bâtisseur la ki renmen travay ak men yo."
+            },
+            F: {
+                name: "Donatè",
+                definition: "Bay gaz nan misyon an lè l bay resous yo.",
+                strengths: "Bay don, leve fon, konekte patwon yo, asire bezwen yo satisfè.",
+                thrive: "Lè yo ka kontribye ak bay resous pou vizyon an.",
+                differentiator: "Bay resous reyèl yo, diferan ak Ankourajè a ki bay pawòl sipò."
+            },
+            G: {
+                name: "Bâtisseur",
+                definition: "Travayè ak men ki fè plan yo vin viv.",
+                strengths: "Prepare evenman yo, jere teknoloji a, bati sa yo bezwen.",
+                thrive: "Nan anviwonman aksyon kote yo ka travay ak men yo.",
+                differentiator: "Egzekite travay yo, diferan ak Òganizè a ki jere lojistik ak plan yo."
+            }
+        };
+
+        let currentQuestion = 0;
+        let answers = [];
+
+        // Function to submit data to Google Sheets
+        async function submitToDashboard(servantType) {
+            if (!GOOGLE_SHEETS_URL || GOOGLE_SHEETS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+                console.log('Google Sheets URL not configured yet');
+                return;
+            }
+            
+            try {
+                const data = {
+                    timestamp: new Date().toISOString(),
+                    type: servantType,
+                    language: 'Kreyòl'
+                };
+                
+                await fetch(GOOGLE_SHEETS_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                console.log('Data submitted to dashboard:', data);
+            } catch (error) {
+                console.error('Error submitting to dashboard:', error);
+            }
+        }
+
+        function initQuiz() {
+            generateQuestions();
+            updateProgress();
+            showQuestion(0);
+            document.getElementById('total-questions').textContent = questions.length;
+        }
+
+        function generateQuestions() {
+            const questionsContainer = document.getElementById('questions');
+            
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.id = `question-${index}`;
+                
+                questionDiv.innerHTML = `
+                    <h3>K${index + 1}. ${q.question}</h3>
+                    <div class="options">
+                        ${q.options.map((option, optIndex) => `
+                            <div class="option" onclick="selectOption(${index}, ${optIndex})">
+                                ${String.fromCharCode(65 + optIndex)}. ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                questionsContainer.appendChild(questionDiv);
+            });
+        }
+
+        function showQuestion(questionIndex) {
+            document.querySelectorAll('.question').forEach(q => q.classList.remove('active'));
+            document.getElementById(`question-${questionIndex}`).classList.add('active');
+            
+            document.getElementById('current-question').textContent = questionIndex + 1;
+            
+            // Update navigation buttons
+            document.getElementById('prev-btn').disabled = questionIndex === 0;
+            
+            if (questionIndex === questions.length - 1) {
+                document.getElementById('next-btn').style.display = 'none';
+                document.getElementById('submit-btn').style.display = answers[questionIndex] !== undefined ? 'inline-block' : 'none';
+            } else {
+                document.getElementById('next-btn').style.display = 'inline-block';
+                document.getElementById('submit-btn').style.display = 'none';
+                document.getElementById('next-btn').disabled = answers[questionIndex] === undefined;
+            }
+        }
+
+        function selectOption(questionIndex, optionIndex) {
+            // Remove previous selection
+            const questionDiv = document.getElementById(`question-${questionIndex}`);
+            questionDiv.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            
+            // Add selection to clicked option
+            questionDiv.querySelectorAll('.option')[optionIndex].classList.add('selected');
+            
+            // Store answer
+            answers[questionIndex] = String.fromCharCode(65 + optionIndex);
+            
+            // Update navigation
+            if (currentQuestion === questions.length - 1) {
+                document.getElementById('submit-btn').style.display = 'inline-block';
+            } else {
+                document.getElementById('next-btn').disabled = false;
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+                updateProgress();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+                updateProgress();
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progress-bar').style.width = progress + '%';
+        }
+
+        function calculateResults() {
+            // Count answers
+            const counts = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0 };
+            answers.forEach(answer => {
+                if (answer) counts[answer]++;
+            });
+
+            // Find highest score(s)
+            const maxCount = Math.max(...Object.values(counts));
+            const topTypes = Object.keys(counts).filter(key => counts[key] === maxCount);
+
+            // Submit to dashboard (in background)
+            if (topTypes.length === 1) {
+                submitToDashboard(topTypes[0]);
+            } else {
+                // For ties, submit the first one alphabetically
+                submitToDashboard(topTypes.sort()[0]);
+            }
+
+            displayResults(topTypes, counts);
+        }
+
+        function displayResults(topTypes, counts) {
+            const resultsContainer = document.getElementById('results-container');
+            const resultsContent = document.getElementById('results-content');
+            
+            // Calculate percentages
+            const total = Object.values(counts).reduce((sum, count) => sum + count, 0);
+            const percentages = {};
+            Object.keys(counts).forEach(key => {
+                percentages[key] = Math.round((counts[key] / total) * 100);
+            });
+            
+            // Sort types by percentage (highest first)
+            const sortedTypes = Object.keys(percentages).sort((a, b) => percentages[b] - percentages[a]);
+            
+            let resultsHTML = '';
+
+            if (topTypes.length === 1) {
+                const type = servantTypes[topTypes[0]];
+                resultsHTML = `
+                    <div class="result-type">${type.name}</div>
+                    <div class="result-content">
+                        <div class="result-section">
+                            <h4>Definisyon</h4>
+                            <p>${type.definition}</p>
+                        </div>
+                        <div class="result-section">
+                            <h4>Fòs Ou yo</h4>
+                            <p>${type.strengths}</p>
+                        </div>
+                        <div class="result-section">
+                            <h4>Kijan Ou Pwospère</h4>
+                            <p>${type.thrive}</p>
+                        </div>
+                        <div class="result-section">
+                            <h4>Sa Ki Fè Ou Inique</h4>
+                            <p>${type.differentiator}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="score-breakdown">
+                        <h4>Pwofil Sètitè Konplè W la</h4>
+                        <div class="score-list">
+                            ${sortedTypes.map(typeKey => `
+                                <div class="score-item">
+                                    <span class="score-type">${servantTypes[typeKey].name}</span>
+                                    <span class="score-percentage">${percentages[typeKey]}%</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else {
+                const tiedPercentage = percentages[topTypes[0]];
+                resultsHTML = `
+                    <div class="tied-results">
+                        <h4>Fòs Melanje yo Detekte!</h4>
+                        <p>Ou jwenn menm pwen nan ${topTypes.length} kalite sètitè (${tiedPercentage}% chak), sa vle di ou gen gwo chans gen fòs melanje nan:</p>
+                        <strong>${topTypes.map(t => servantTypes[t].name).join(', ')}</strong>
+                    </div>
+                `;
+                
+                topTypes.forEach(typeKey => {
+                    const type = servantTypes[typeKey];
+                    resultsHTML += `
+                        <div class="result-type">${type.name}</div>
+                        <div class="result-content">
+                            <div class="result-section">
+                                <h4>Definisyon</h4>
+                                <p>${type.definition}</p>
+                            </div>
+                            <div class="result-section">
+                                <h4>Fòs Ou yo</h4>
+                                <p>${type.strengths}</p>
+                            </div>
+                            <div class="result-section">
+                                <h4>Kijan Ou Pwospère</h4>
+                                <p>${type.thrive}</p>
+                            </div>
+                            <div class="result-section">
+                                <h4>Sa Ki Fè Ou Inique</h4>
+                                <p>${type.differentiator}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                resultsHTML += `
+                    <div class="score-breakdown">
+                        <h4>Pwofil Sètitè Konplè W la</h4>
+                        <div class="score-list">
+                            ${sortedTypes.map(typeKey => `
+                                <div class="score-item">
+                                    <span class="score-type">${servantTypes[typeKey].name}</span>
+                                    <span class="score-percentage">${percentages[typeKey]}%</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            resultsHTML += `
+                <div class="dashboard-contribution">
+                    <strong>🎯 Repons ou an ajoute nan dashboard atèlye ki vivan an!</strong>
+                    <p>Tcheke pwojektè a pou wè kijan kalite sètitè gwoup nou an distribye yo.</p>
+                </div>
+                
+                <div class="reference-note">
+                    <strong>Nòt Referans:</strong> Tès sa a adapte nan de tradisyon etabli yo: <em>Enventè Don Esprit yo</em>, ki itilize depi lontan nan kominote kretyen yo, ak <em>Ikigai</em>, sistèm Japonè pou jwenn 'rezon pou viv' ou a. Li vin pi senp nan 7 Kalite Sètitè Wayòm yo pou ede moun yo idantifye fòs yo, konprann valè yo, ak wè kijan yo pi byen pwospère nan yon anviwonman kominote.
+                </div>
+            `;
+
+            resultsContent.innerHTML = resultsHTML;
+            
+            // Hide quiz, show results
+            document.getElementById('quiz-container').style.display = 'none';
+            resultsContainer.classList.add('active');
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            answers = [];
+            
+            // Reset UI
+            document.getElementById('quiz-container').style.display = 'block';
+            document.getElementById('results-container').classList.remove('active');
+            
+            // Clear selections
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            
+            showQuestion(0);
+            updateProgress();
+        }
+
+        // Initialize quiz on page load
+        window.onload = initQuiz;
+    </script>
+</body>
+</html>
