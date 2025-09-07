@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kingdom Servant Types - Live Workshop Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 4em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 2em;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+            flex: 1;
+            max-height: calc(100vh - 200px);
+        }
+        
+        .summary-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .stat-number {
+            font-size: 5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .stat-label {
+            font-size: 1.8em;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .chart-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chart-title {
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .bars-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            gap: 15px;
+        }
+        
+        .bar-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .bar-label {
+            font-size: 1.8em;
+            font-weight: 500;
+            min-width: 150px;
+            text-align: right;
+        }
+        
+        .bar-container {
+            flex: 1;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #10b981, #34d399);
+            border-radius: 25px;
+            transition: width 1s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.4em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .bar-count {
+            font-size: 1.8em;
+            font-weight: bold;
+            min-width: 80px;
+            text-align: center;
+        }
+        
+        .no-data {
+            text-align: center;
+            font-size: 2em;
+            opacity: 0.7;
+            margin-top: 100px;
+        }
+        
+        .loading {
+            text-align: center;
+            font-size: 1.5em;
+            opacity: 0.8;
+            margin-top: 20px;
+        }
+        
+        .error-message {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fecaca;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        
+        .config-reminder {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(245, 158, 11, 0.9);
+            color: #92400e;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            max-width: 300px;
+            z-index: 1000;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .servant-type-colors {
+            /* Different colors for each servant type */
+        }
+        
+        .bar-fill.visionary { background: linear-gradient(45deg, #8b5cf6, #a78bfa); }
+        .bar-fill.shepherd { background: linear-gradient(45deg, #10b981, #34d399); }
+        .bar-fill.teacher { background: linear-gradient(45deg, #3b82f6, #60a5fa); }
+        .bar-fill.encourager { background: linear-gradient(45deg, #f59e0b, #fbbf24); }
+        .bar-fill.organizer { background: linear-gradient(45deg, #ef4444, #f87171); }
+        .bar-fill.giver { background: linear-gradient(45deg, #8b5cf6, #a78bfa); }
+        .bar-fill.builder { background: linear-gradient(45deg, #6b7280, #9ca3af); }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Kingdom Servant Types</h1>
+        <div class="subtitle">Live Workshop Results</div>
+    </div>
+    
+    <div class="stats-container">
+        <div class="summary-stats">
+            <div class="stat-card">
+                <div class="stat-number pulse" id="participant-count">0</div>
+                <div class="stat-label">Participants</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="completion-rate">0%</div>
+                <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="loading" id="status">Waiting for responses...</div>
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <div class="chart-title">Servant Type Distribution</div>
+            <div class="bars-container" id="bars-container">
+                <div class="no-data" id="no-data">
+                    📊 Results will appear here as people complete the quiz!
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Configuration reminder (remove this once Google Sheets is set up) -->
+    <div class="config-reminder" id="config-reminder">
+        ⚠️ Remember to configure your Google Apps Script URL in the quiz files!
+    </div>
+
+    <script>
+        // Google Sheets Configuration - REPLACE WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
+        const GOOGLE_SHEETS_READ_URL = 'YOUR_GOOGLE_APPS_SCRIPT_READ_URL_HERE';
+        
+        // Servant type configuration
+        const servantTypes = {
+            'A': { name: 'Visionary', class: 'visionary' },
+            'B': { name: 'Shepherd', class: 'shepherd' },
+            'C': { name: 'Teacher', class: 'teacher' },
+            'D': { name: 'Encourager', class: 'encourager' },
+            'E': { name: 'Organizer', class: 'organizer' },
+            'F': { name: 'Giver', class: 'giver' },
+            'G': { name: 'Builder', class: 'builder' }
+        };
+        
+        // Dashboard state
+        let lastDataCount = 0;
+        let isConfigured = false;
+        
+        // Check if Google Sheets is configured
+        function checkConfiguration() {
+            isConfigured = GOOGLE_SHEETS_READ_URL && 
+                          GOOGLE_SHEETS_READ_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_READ_URL_HERE' &&
+                          GOOGLE_SHEETS_READ_URL.includes('script.google.com');
+            
+            if (isConfigured) {
+                document.getElementById('config-reminder').style.display = 'none';
+            }
+        }
+        
+        // Fetch data from Google Sheets
+        async function fetchQuizData() {
+            if (!isConfigured) {
+                updateStatus('Configure Google Sheets URL first');
+                return null;
+            }
+            
+            try {
+                const response = await fetch(GOOGLE_SHEETS_READ_URL);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                updateStatus('Error connecting to data source');
+                return null;
+            }
+        }
+        
+        // Process raw data into counts
+        function processData(rawData) {
+            if (!rawData || !Array.isArray(rawData)) {
+                return { total: 0, types: {} };
+            }
+            
+            const typeCounts = {};
+            Object.keys(servantTypes).forEach(key => {
+                typeCounts[key] = 0;
+            });
+            
+            rawData.forEach(row => {
+                if (row.type && typeCounts.hasOwnProperty(row.type)) {
+                    typeCounts[row.type]++;
+                }
+            });
+            
+            return {
+                total: rawData.length,
+                types: typeCounts
+            };
+        }
+        
+        // Update participant count
+        function updateParticipantCount(count) {
+            const element = document.getElementById('participant-count');
+            element.textContent = count;
+            
+            // Add pulse animation for new participants
+            if (count > lastDataCount) {
+                element.classList.add('pulse');
+                setTimeout(() => {
+                    element.classList.remove('pulse');
+                }, 2000);
+            }
+            
+            lastDataCount = count;
+        }
+        
+        // Update completion rate (assuming target of 300)
+        function updateCompletionRate(count) {
+            const targetParticipants = 300; // Adjust this for your workshop
+            const rate = Math.round((count / targetParticipants) * 100);
+            document.getElementById('completion-rate').textContent = `${Math.min(rate, 100)}%`;
+        }
+        
+        // Update status message
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+        
+        // Create or update the bar chart
+        function updateBarChart(typeCounts, total) {
+            const container = document.getElementById('bars-container');
+            const noDataElement = document.getElementById('no-data');
+            
+            if (total === 0) {
+                noDataElement.style.display = 'block';
+                container.innerHTML = '<div class="no-data" id="no-data">📊 Results will appear here as people complete the quiz!</div>';
+                return;
+            }
+            
+            noDataElement.style.display = 'none';
+            
+            // Sort types by count (highest first)
+            const sortedTypes = Object.entries(typeCounts)
+                .sort(([,a], [,b]) => b - a)
+                .filter(([,count]) => count > 0); // Only show types with responses
+            
+            // Calculate max count for scaling
+            const maxCount = Math.max(...Object.values(typeCounts));
+            
+            // Generate bars HTML
+            const barsHTML = sortedTypes.map(([typeKey, count]) => {
+                const type = servantTypes[typeKey];
+                const percentage = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
+                const barWidth = maxCount > 0 ? (count / maxCount) * 100 : 0;
+                
+                return `
+                    <div class="bar-item">
+                        <div class="bar-label">${type.name}</div>
+                        <div class="bar-container">
+                            <div class="bar-fill ${type.class}" style="width: ${barWidth}%">
+                                ${percentage}%
+                            </div>
+                        </div>
+                        <div class="bar-count">${count}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            container.innerHTML = barsHTML;
+        }
+        
+        // Main update function
+        async function updateDashboard() {
+            const rawData = await fetchQuizData();
+            
+            if (rawData) {
+                const processed = processData(rawData);
+                
+                updateParticipantCount(processed.total);
+                updateCompletionRate(processed.total);
+                updateBarChart(processed.types, processed.total);
+                
+                if (processed.total > 0) {
+                    updateStatus(`Last updated: ${new Date().toLocaleTimeString()}`);
+                } else {
+                    updateStatus('Waiting for first responses...');
+                }
+            }
+        }
+        
+        // Initialize dashboard
+        function initDashboard() {
+            checkConfiguration();
+            updateDashboard();
+            
+            // Update every 3 seconds
+            setInterval(updateDashboard, 3000);
+            
+            // Show initial message
+            if (isConfigured) {
+                updateStatus('Ready! Waiting for quiz responses...');
+            } else {
+                updateStatus('Configure Google Sheets connection first');
+            }
+        }
+        
+        // Start the dashboard when page loads
+        window.onload = initDashboard;
+        
+        // Handle visibility change (pause updates when tab is hidden)
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') {
+                updateDashboard(); // Immediate update when tab becomes visible
+            }
+        });
+    </script>
+</body>
+</html>
