@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kingdom Servant Types Quiz - English</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #1e3a8a;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+        
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            color: #2563eb;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .back-home:hover {
+            color: #1e40af;
+        }
+        
+        .question {
+            margin-bottom: 25px;
+            display: none;
+        }
+        
+        .question.active {
+            display: block;
+        }
+        
+        .question h3 {
+            color: #1e3a8a;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .options {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .option {
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        .option:hover {
+            border-color: #2563eb;
+            background: #dbeafe;
+            transform: translateY(-2px);
+        }
+        
+        .option.selected {
+            border-color: #2563eb;
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            color: white;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        .progress {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+        
+        .progress-text {
+            text-align: center;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        .results {
+            display: none;
+            text-align: center;
+        }
+        
+        .results.active {
+            display: block;
+        }
+        
+        .result-type {
+            font-size: 2.5em;
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .result-content {
+            text-align: left;
+            margin: 20px 0;
+        }
+        
+        .result-section {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #2563eb;
+        }
+        
+        .result-section h4 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+        
+        .score-breakdown {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #2563eb;
+        }
+        
+        .score-breakdown h4 {
+            color: #1e3a8a;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .score-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        
+        .score-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 5px;
+            border-left: 3px solid #2563eb;
+        }
+        
+        .score-type {
+            font-weight: 500;
+            color: #1e3a8a;
+        }
+        
+        .score-percentage {
+            font-weight: bold;
+            color: #2563eb;
+        }
+        
+        .tied-results {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .reference-note {
+            background: #e6f3ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #2196f3;
+            font-style: italic;
+            color: #555;
+        }
+        
+        .dashboard-contribution {
+            background: #f0fdf4;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #10b981;
+            text-align: center;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <a href="index.html" class="back-home">← Back to Language Selection</a>
+            
+            <div class="header">
+                <h1>Kingdom Servant Types Quiz</h1>
+                <p class="subtitle">Discover how you naturally contribute to a thriving church or community</p>
+            </div>
+            
+            <div id="quiz-container">
+                <div class="progress">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+                <div class="progress-text">
+                    <span id="current-question">1</span> of <span id="total-questions">21</span>
+                </div>
+                
+                <!-- Questions will be generated here -->
+                <div id="questions"></div>
+                
+                <div class="navigation">
+                    <button class="btn btn-primary" id="prev-btn" onclick="previousQuestion()" disabled>Previous</button>
+                    <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()" disabled>Next</button>
+                    <button class="btn btn-primary" id="submit-btn" onclick="calculateResults()" style="display: none;">Get My Results</button>
+                </div>
+            </div>
+            
+            <div id="results-container" class="results">
+                <a href="index.html" class="back-home">← Back to Language Selection</a>
+                <div id="results-content"></div>
+                <button class="btn btn-primary" onclick="restartQuiz()" style="margin-top: 20px;">Take Quiz Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Google Sheets Configuration - YOU NEED TO REPLACE THIS URL
+        const GOOGLE_SHEETS_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+        
+        const questions = [
+            {
+                question: "Your church wants to help the community. What do you think first?",
+                options: [
+                    "What's our big goal? How does this fit what we want to do long-term?",
+                    "Who haven't we invited lately? Who might feel left out?",
+                    "What do people need to learn to make this work?",
+                    "This will be so good for everyone!",
+                    "When do we need this done? Who does what?",
+                    "What do we have? What do we still need?",
+                    "Where will we set up? What stuff do we need?"
+                ]
+            },
+            {
+                question: "Two people on your team are arguing. What do you want to do?",
+                options: [
+                    "Talk about the big picture and what you all want",
+                    "Check on both people after the meeting",
+                    "Clear up any confusion about who does what",
+                    "Make a joke or say something positive",
+                    "Take a break and make a clear plan",
+                    "Help fix any money or supply problems",
+                    "Find a solution that works right now"
+                ]
+            },
+            {
+                question: "You go to a work conference. Which session sounds good?",
+                options: [
+                    "Making a 10-Year Plan for Your Work",
+                    "Building Better Relationships",
+                    "How to Talk So People Understand",
+                    "Staying Positive When Things Are Hard",
+                    "Getting Projects Done on Time",
+                    "How to Raise Money the Right Way",
+                    "Hands-On Workshop: Setting Up Your Space"
+                ]
+            },
+            {
+                question: "After church on Sunday, you usually:",
+                options: [
+                    "Think about new ideas you heard",
+                    "Check on people who seemed quiet or sad",
+                    "Talk about what the sermon means in real life",
+                    "Say something positive to others",
+                    "Think about how well everything went",
+                    "Notice what people might need help with",
+                    "Help clean up without being asked"
+                ]
+            },
+            {
+                question: "When you plan a family trip, you:",
+                options: [
+                    "Look up places and think about the fun you'll have",
+                    "Make sure everyone gets what they want",
+                    "Find activities and plan what you'll learn",
+                    "Focus on making good memories for everyone",
+                    "Make detailed schedules and backup plans",
+                    "Set the budget and find good deals",
+                    "Book everything and make packing lists"
+                ]
+            },
+            {
+                question: "At a dinner party where you don't know people, you:",
+                options: [
+                    "Share stories about cool projects you're working on",
+                    "Ask people about their families and lives",
+                    "End up explaining things you know about",
+                    "Make sure quiet people feel included",
+                    "Help the host organize activities",
+                    "Offer to bring something or help pay",
+                    "Help serve food or set things up"
+                ]
+            },
+            {
+                question: "Your perfect weekend is:",
+                options: [
+                    "Planning something exciting for the future",
+                    "Spending good time with family or friends",
+                    "Learning something new",
+                    "Doing something fun that makes you happy",
+                    "Cleaning your space or planning next week",
+                    "Working on something that helps others",
+                    "Building or fixing something with your hands"
+                ]
+            },
+            {
+                question: "When a friend tells you about a problem, you usually say:",
+                options: [
+                    "Have you thought about trying something totally different?",
+                    "How do you feel about all this?",
+                    "Let me help you figure out what's really going on",
+                    "This is hard, but I think things will get better",
+                    "What have you tried? What should you do next?",
+                    "Can I help? Do you need anything?",
+                    "Want me to come over and help you fix this?"
+                ]
+            },
+            {
+                question: "In group projects, people remember you as the one who:",
+                options: [
+                    "Came up with creative ideas",
+                    "Made sure everyone felt included",
+                    "Explained things when people were confused",
+                    "Kept everyone's spirits up when things got hard",
+                    "Kept track of deadlines and made sure things got done",
+                    "Found ways to get money or supplies",
+                    "Did a lot of the actual work"
+                ]
+            },
+            {
+                question: "When you see a homeless person, you first think:",
+                options: [
+                    "There has to be a better way to fix this problem",
+                    "I wonder what happened to them",
+                    "I wish people understood how hard this is",
+                    "I hope they know they matter and things can get better",
+                    "What help is out there? How can they get it?",
+                    "I should give them something",
+                    "Maybe I can help them with something right now"
+                ]
+            },
+            {
+                question: "Your favorite movies or books usually:",
+                options: [
+                    "Show people chasing big dreams or changing the world",
+                    "Focus on relationships and connections",
+                    "Teach you something new",
+                    "Have happy endings and hope",
+                    "Have good plots that all make sense",
+                    "Show people helping others",
+                    "Show people solving problems by taking action"
+                ]
+            },
+            {
+                question: "When you start a new job, you:",
+                options: [
+                    "Ask about the company's big goals and plans",
+                    "Try to get to know your coworkers as people",
+                    "Want to understand how everything works",
+                    "Focus on building good relationships",
+                    "Ask for clear job descriptions",
+                    "Look for ways to do more than just your job",
+                    "Jump in and start working on real tasks"
+                ]
+            },
+            {
+                question: "Your friends say you're good at:",
+                options: [
+                    "Seeing possibilities others miss",
+                    "Making people feel cared for",
+                    "Making hard topics easy to understand",
+                    "Helping people feel better about themselves",
+                    "Keeping things running smoothly",
+                    "Being generous with your time and money",
+                    "Getting things done well and fast"
+                ]
+            },
+            {
+                question: "What bothers you most in groups?",
+                options: [
+                    "When people only talk about small details, not the big picture",
+                    "When people seem left out or disconnected",
+                    "When there's confusion that could be fixed",
+                    "When things get negative or people lose hope",
+                    "When things are messy or there's no clear plan",
+                    "When there are needs that no one is meeting",
+                    "When there's too much talking and not enough doing"
+                ]
+            },
+            {
+                question: "At a community festival, you'd like to:",
+                options: [
+                    "Plan next year's event and think of improvements",
+                    "Welcome visitors and help them feel at home",
+                    "Lead a class or show people how to do something",
+                    "Encourage volunteers and celebrate wins",
+                    "Organize volunteers and manage logistics",
+                    "Work the donation booth or get sponsors",
+                    "Set up booths or fix technical problems"
+                ]
+            },
+            {
+                question: "When you have to make a big decision, you:",
+                options: [
+                    "Think about your long-term dreams and goals",
+                    "Think about how it affects people you care about",
+                    "Do research and ask smart people for advice",
+                    "Try to stay positive and look for good outcomes",
+                    "Make lists of good and bad points",
+                    "Think about money and what you'll need",
+                    "Focus on what you can actually do"
+                ]
+            },
+            {
+                question: "Your ideal team meeting would:",
+                options: [
+                    "Focus on dreaming about the future and setting big goals",
+                    "Include time for everyone to share how they're doing",
+                    "Involve learning something new together",
+                    "Leave everyone feeling encouraged",
+                    "Have a clear plan and get specific things done",
+                    "Find ways the team can help others or support a cause",
+                    "End with clear action steps and jobs for everyone"
+                ]
+            },
+            {
+                question: "When you see a problem in your community, you:",
+                options: [
+                    "Think of a new solution that could change everything",
+                    "Reach out to people who are hurt by the problem",
+                    "Research to understand why it's happening",
+                    "Find ways to bring hope to people who are struggling",
+                    "Make a step-by-step plan to fix the problem",
+                    "Look for ways to give money, time, or supplies",
+                    "Start working on solutions right away"
+                ]
+            },
+            {
+                question: "People often come to you when they need:",
+                options: [
+                    "Someone to help them think differently",
+                    "Someone to listen and give emotional support",
+                    "Hard information explained in simple ways",
+                    "Motivation or confidence",
+                    "Help organizing their thoughts or plans",
+                    "Help finding resources or making connections",
+                    "Hands-on help getting something done"
+                ]
+            },
+            {
+                question: "In your free time, you like activities that:",
+                options: [
+                    "Involve creativity or exploring new ideas",
+                    "Connect you with family, friends, or community",
+                    "Let you learn new skills or get better at something",
+                    "Bring joy to you and others",
+                    "Help you organize or create structure",
+                    "Let you help causes you care about",
+                    "Involve building, creating, or finishing real projects"
+                ]
+            },
+            {
+                question: "Looking back on your life, you feel most proud when you:",
+                options: [
+                    "Inspired others to do something meaningful",
+                    "Made a big difference in someone's life by caring",
+                    "Helped people understand something important",
+                    "Encouraged someone through a hard time",
+                    "Successfully organized something complex",
+                    "Gave resources that made a real difference",
+                    "Finished something concrete and lasting"
+                ]
+            }
+        ];
+
+        const servantTypes = {
+            A: {
+                name: "Visionary",
+                definition: "Spark plug of the community, always looking ahead and imagining what's possible.",
+                strengths: "Casts vision, inspires others, leads long-term planning, brainstorms outreach.",
+                thrive: "When given space to dream, influence direction, and inspire.",
+                differentiator: "Provides direction and why, not details — unlike the Organizer."
+            },
+            B: {
+                name: "Shepherd",
+                definition: "Heart of the community, cares deeply for people's well-being.",
+                strengths: "Builds belonging, checks in on members, ensures no one is left out.",
+                thrive: "In relational settings where they can nurture and support.",
+                differentiator: "Offers steady care over time, unlike the Encourager who provides bursts of motivation."
+            },
+            C: {
+                name: "Teacher",
+                definition: "Loves making complex things clear, equipping others through knowledge.",
+                strengths: "Leads studies, explains scripture, builds training tools.",
+                thrive: "In teaching environments where they can clarify and share knowledge.",
+                differentiator: "Translates ideas into lessons, unlike the Visionary who casts direction."
+            },
+            D: {
+                name: "Encourager",
+                definition: "Motivator of the group, keeps energy high and people hopeful.",
+                strengths: "Uplifts others, boosts morale, spreads positivity.",
+                thrive: "In people-centered spaces where they can motivate and affirm.",
+                differentiator: "Provides emotional boosts, unlike the Shepherd who offers ongoing care."
+            },
+            E: {
+                name: "Organizer",
+                definition: "Planner and coordinator who keeps everything running smoothly.",
+                strengths: "Manages details, coordinates volunteers, ensures flawless execution.",
+                thrive: "In structured environments with checklists and timelines.",
+                differentiator: "Creates systems, unlike the Builder who thrives on hands-on action."
+            },
+            F: {
+                name: "Giver",
+                definition: "Fuels the mission by providing resources.",
+                strengths: "Donates, fundraises, connects sponsors, ensures needs are met.",
+                thrive: "When they can contribute and resource the vision.",
+                differentiator: "Provides tangible resources, unlike the Encourager who offers words of support."
+            },
+            G: {
+                name: "Builder",
+                definition: "Hands-on doer who brings plans to life.",
+                strengths: "Sets up events, manages tech, builds what's needed.",
+                thrive: "In action-oriented environments where they can work with their hands.",
+                differentiator: "Executes tasks, unlike the Organizer who manages logistics and plans."
+            }
+        };
+
+        let currentQuestion = 0;
+        let answers = [];
+
+        // Function to submit data to Google Sheets
+        async function submitToDashboard(servantType) {
+            if (!GOOGLE_SHEETS_URL || GOOGLE_SHEETS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+                console.log('Google Sheets URL not configured yet');
+                return;
+            }
+            
+            try {
+                const data = {
+                    timestamp: new Date().toISOString(),
+                    type: servantType,
+                    language: 'English'
+                };
+                
+                await fetch(GOOGLE_SHEETS_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                console.log('Data submitted to dashboard:', data);
+            } catch (error) {
+                console.error('Error submitting to dashboard:', error);
+            }
+        }
+
+        function initQuiz() {
+            generateQuestions();
+            updateProgress();
+            showQuestion(0);
+            document.getElementById('total-questions').textContent = questions.length;
+        }
+
+        function generateQuestions() {
+            const questionsContainer = document.getElementById('questions');
+            
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.id = `question-${index}`;
+                
+                questionDiv.innerHTML = `
+                    <h3>Q${index + 1}. ${q.question}</h3>
+                    <div class="options">
+                        ${q.options.map((option, optIndex) => `
+                            <div class="option" onclick="selectOption(${index}, ${optIndex})">
+                                ${String.fromCharCode(65 + optIndex)}. ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                questionsContainer.appendChild(questionDiv);
+            });
+        }
+
+        function showQuestion(questionIndex) {
+            document.querySelectorAll('.question').forEach(q => q.classList.remove('active'));
+            document.getElementById(`question-${questionIndex}`).classList.add('active');
+            
+            document.getElementById('current-question').textContent = questionIndex + 1;
+            
+            // Update navigation buttons
+            document.getElementById('prev-btn').disabled = questionIndex === 0;
+            
+            if (questionIndex === questions.length - 1) {
+                document.getElementById('next-btn').style.display = 'none';
+                document.getElementById('submit-btn').style.display = answers[questionIndex] !== undefined ? 'inline-block' : 'none';
+            } else {
+                document.getElementById('next-btn').style.display = 'inline-block';
+                document.getElementById('submit-btn').style.display = 'none';
+                document.getElementById('next-btn').disabled = answers[questionIndex] === undefined;
+            }
+        }
+
+        function selectOption(questionIndex, optionIndex) {
+            // Remove previous selection
+            const questionDiv = document.getElementById(`question-${questionIndex}`);
+            questionDiv.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            
+            // Add selection to clicked option
+            questionDiv.querySelectorAll('.option')[optionIndex].classList.add('selected');
+            
+            // Store answer
+            answers[questionIndex] = String.fromCharCode(65 + optionIndex);
+            
+            // Update navigation
+            if (currentQuestion === questions.length - 1) {
+                document.getElementById('submit-btn').style.display = 'inline-block';
+            } else {
+                document.getElementById('next-btn').disabled = false;
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+                updateProgress();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+                updateProgress();
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progress-bar').style.width = progress + '%';
+        }
+
+        function calculateResults() {
+            // Count answers
+            const counts = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0 };
+            answers.forEach(answer => {
+                if (answer) counts[answer]++;
+            });
+
+            // Find highest score(s)
+            const maxCount = Math.max(...Object.values(counts));
+            const topTypes = Object.keys(counts).filter(key => counts[key] === maxCount);
+
+            // Submit to dashboard (in background)
+            if (topTypes.length === 1) {
+                submitToDashboard(topTypes[0]);
+            } else {
+                // For ties, submit the first one alphabetically
+                submitToDashboard(topTypes.sort()[0]);
+            }
+
+            displayResults(topTypes, counts);
+        }
+
+        function displayResults(topTypes, counts) {
+            const resultsContainer = document.getElementById('results-container');
+            const resultsContent = document.getElementById('results-content');
+            
+            // Calculate percentages
+            const total = Object.values(counts).reduce((sum, count) => sum + count, 0);
+            const percentages = {};
+            Object.keys(counts).forEach(key => {
+                percentages[key] = Math.round((counts[key] / total) * 100);
+            });
+            
+            // Sort types by percentage (highest first)
+            const sortedTypes = Object.keys(percentages).sort((a, b) => percentages[b] - percentages[a]);
+            
+            let resultsHTML = '';
+
+            if (topTypes.length === 1) {
+                const type = servantTypes[topTypes[0]];
+                resultsHTML = `
+                    <div class="result-type">${type.name}</div>
+                    <div class="result-content">
+                        <div class="result-section">
+                            <h4>Definition</h4>
+                            <p>${type.definition}</p>
+                        </div>
+                        <div class="result-section">
+                            <h4>Your Strengths</h4>
+                            <p>${type.strengths}</p>
+                        </div>
+                        <div class="result-section">
+                            <h4>How You Thrive</h4>
+                            <p>${type.thrive}</p>
+                        </div>
+                        <div class="result-section">
+                            <h4>What Makes You Unique</h4>
+                            <p>${type.differentiator}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="score-breakdown">
+                        <h4>Your Complete Servant Profile</h4>
+                        <div class="score-list">
+                            ${sortedTypes.map(typeKey => `
+                                <div class="score-item">
+                                    <span class="score-type">${servantTypes[typeKey].name}</span>
+                                    <span class="score-percentage">${percentages[typeKey]}%</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else {
+                const tiedPercentage = percentages[topTypes[0]];
+                resultsHTML = `
+                    <div class="tied-results">
+                        <h4>Blended Strengths Detected!</h4>
+                        <p>You scored equally high in ${topTypes.length} servant types (${tiedPercentage}% each), indicating you likely carry blended strengths from:</p>
+                        <strong>${topTypes.map(t => servantTypes[t].name).join(', ')}</strong>
+                    </div>
+                `;
+                
+                topTypes.forEach(typeKey => {
+                    const type = servantTypes[typeKey];
+                    resultsHTML += `
+                        <div class="result-type">${type.name}</div>
+                        <div class="result-content">
+                            <div class="result-section">
+                                <h4>Definition</h4>
+                                <p>${type.definition}</p>
+                            </div>
+                            <div class="result-section">
+                                <h4>Your Strengths</h4>
+                                <p>${type.strengths}</p>
+                            </div>
+                            <div class="result-section">
+                                <h4>How You Thrive</h4>
+                                <p>${type.thrive}</p>
+                            </div>
+                            <div class="result-section">
+                                <h4>What Makes You Unique</h4>
+                                <p>${type.differentiator}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                resultsHTML += `
+                    <div class="score-breakdown">
+                        <h4>Your Complete Servant Profile</h4>
+                        <div class="score-list">
+                            ${sortedTypes.map(typeKey => `
+                                <div class="score-item">
+                                    <span class="score-type">${servantTypes[typeKey].name}</span>
+                                    <span class="score-percentage">${percentages[typeKey]}%</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            resultsHTML += `
+                <div class="dashboard-contribution">
+                    <strong>🎯 Your response has been added to the live workshop dashboard!</strong>
+                    <p>Check the projector to see how our group's servant types are distributed.</p>
+                </div>
+                
+                <div class="reference-note">
+                    <strong>Reference Note:</strong> This quiz is adapted from two established traditions: <em>Spiritual Gifts Inventories</em>, long used in Christian communities, and <em>Ikigai</em>, the Japanese framework for finding one's 'reason for being.' It has been simplified into the 7 Kingdom Servant Types to help people identify their strengths, understand their value, and see how they best thrive in a community setting.
+                </div>
+            `;
+
+            resultsContent.innerHTML = resultsHTML;
+            
+            // Hide quiz, show results
+            document.getElementById('quiz-container').style.display = 'none';
+            resultsContainer.classList.add('active');
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            answers = [];
+            
+            // Reset UI
+            document.getElementById('quiz-container').style.display = 'block';
+            document.getElementById('results-container').classList.remove('active');
+            
+            // Clear selections
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            
+            showQuestion(0);
+            updateProgress();
+        }
+
+        // Initialize quiz on page load
+        window.onload = initQuiz;
+    </script>
+</body>
+</html>
