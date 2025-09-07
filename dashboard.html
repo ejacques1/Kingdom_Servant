@@ -239,7 +239,7 @@
 
     <script>
         // Google Sheets Configuration - REPLACE WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
-        const GOOGLE_SHEETS_READ_URL = 'YOUR_GOOGLE_APPS_SCRIPT_READ_URL_HERE';
+        const GOOGLE_SHEETS_READ_URL = 'https://script.google.com/macros/s/AKfycbyimv9_lHg-mIMjeqwW8YLhsmaOAcxPznOjRQ1eqbSKdSYYTptNwDX0zsBkrCXEXtzu0w/exec';
         
         // Servant type configuration
         const servantTypes = {
@@ -259,7 +259,7 @@
         // Check if Google Sheets is configured
         function checkConfiguration() {
             isConfigured = GOOGLE_SHEETS_READ_URL && 
-                          GOOGLE_SHEETS_READ_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_READ_URL_HERE' &&
+                          GOOGLE_SHEETS_READ_URL !== 'https://script.google.com/macros/s/AKfycbyimv9_lHg-mIMjeqwW8YLhsmaOAcxPznOjRQ1eqbSKdSYYTptNwDX0zsBkrCXEXtzu0w/exec' &&
                           GOOGLE_SHEETS_READ_URL.includes('script.google.com');
             
             if (isConfigured) {
