@@ -176,6 +176,7 @@
             font-size: 1.1em;
             max-width: 300px;
             z-index: 1000;
+            display: none;
         }
         
         .pulse {
@@ -232,13 +233,13 @@
         </div>
     </div>
     
-    <!-- Configuration reminder (remove this once Google Sheets is set up) -->
+    <!-- Configuration reminder (hidden since we're now configured) -->
     <div class="config-reminder" id="config-reminder">
         ⚠️ Remember to configure your Google Apps Script URL in the quiz files!
     </div>
 
     <script>
-        // Google Sheets Configuration - REPLACE WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
+        // Google Sheets Configuration - Updated with your correct URL
         const GOOGLE_SHEETS_READ_URL = 'https://script.google.com/macros/s/AKfycbyimv9_lHg-mIMjeqwW8YLhsmaOAcxPznOjRQ1eqbSKdSYYTptNwDX0zsBkrCXEXtzu0w/exec';
         
         // Servant type configuration
@@ -259,7 +260,7 @@
         // Check if Google Sheets is configured
         function checkConfiguration() {
             isConfigured = GOOGLE_SHEETS_READ_URL && 
-                          GOOGLE_SHEETS_READ_URL !== 'https://script.google.com/macros/s/AKfycbyimv9_lHg-mIMjeqwW8YLhsmaOAcxPznOjRQ1eqbSKdSYYTptNwDX0zsBkrCXEXtzu0w/exec' &&
+                          GOOGLE_SHEETS_READ_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_READ_URL_HERE' &&
                           GOOGLE_SHEETS_READ_URL.includes('script.google.com');
             
             if (isConfigured) {
