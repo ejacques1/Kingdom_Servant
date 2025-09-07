@@ -123,7 +123,6 @@
         
         .bar-fill {
             height: 100%;
-            background: linear-gradient(45deg, #10b981, #34d399);
             border-radius: 25px;
             transition: width 1s ease-out;
             display: flex;
@@ -155,30 +154,6 @@
             margin-top: 20px;
         }
         
-        .error-message {
-            background: rgba(239, 68, 68, 0.2);
-            color: #fecaca;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            text-align: center;
-            font-size: 1.2em;
-        }
-        
-        .config-reminder {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(245, 158, 11, 0.9);
-            color: #92400e;
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 1.1em;
-            max-width: 300px;
-            z-index: 1000;
-            display: none;
-        }
-        
         .pulse {
             animation: pulse 2s infinite;
         }
@@ -189,10 +164,6 @@
             100% { opacity: 1; }
         }
         
-        .servant-type-colors {
-            /* Different colors for each servant type */
-        }
-        
         .bar-fill.visionary { background: linear-gradient(45deg, #8b5cf6, #a78bfa); }
         .bar-fill.shepherd { background: linear-gradient(45deg, #10b981, #34d399); }
         .bar-fill.teacher { background: linear-gradient(45deg, #3b82f6, #60a5fa); }
@@ -200,6 +171,16 @@
         .bar-fill.organizer { background: linear-gradient(45deg, #ef4444, #f87171); }
         .bar-fill.giver { background: linear-gradient(45deg, #8b5cf6, #a78bfa); }
         .bar-fill.builder { background: linear-gradient(45deg, #6b7280, #9ca3af); }
+        
+        .status-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -219,7 +200,7 @@
                 <div class="stat-label">Completed</div>
             </div>
             <div class="stat-card">
-                <div class="loading" id="status">Waiting for responses...</div>
+                <div class="loading" id="status">Loading...</div>
             </div>
         </div>
         
@@ -233,14 +214,13 @@
         </div>
     </div>
     
-    <!-- Configuration reminder (hidden since we're now configured) -->
-    <div class="config-reminder" id="config-reminder">
-        ⚠️ Remember to configure your Google Apps Script URL in the quiz files!
+    <div class="status-indicator" id="status-indicator">
+        Ready to receive results
     </div>
 
     <script>
-        // Google Sheets Configuration - Updated with your correct URL
-        const GOOGLE_SHEETS_READ_URL = 'https://script.google.com/macros/s/AKfycbwpDr8MuUzeXEIfTtaY_TKw_1ubCv5JCsKwnLhn7BVeA0fKMo3pa8vW1xmDPdtqMo71SQ/exec';
+        // Configuration - Your GitHub repo (this should work automatically)
+        const GITHUB_REPO_URL = 'https://raw.githubusercontent.com/ejacques1/Kingdom_Servant/main/quiz-results.json';
         
         // Servant type configuration
         const servantTypes = {
@@ -255,37 +235,21 @@
         
         // Dashboard state
         let lastDataCount = 0;
-        let isConfigured = false;
+        let lastUpdateTime = null;
         
-        // Check if Google Sheets is configured
-        function checkConfiguration() {
-            isConfigured = GOOGLE_SHEETS_READ_URL && 
-                          GOOGLE_SHEETS_READ_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_READ_URL_HERE' &&
-                          GOOGLE_SHEETS_READ_URL.includes('script.google.com');
-            
-            if (isConfigured) {
-                document.getElementById('config-reminder').style.display = 'none';
-            }
-        }
-        
-        // Fetch data from Google Sheets
+        // Fetch data from GitHub JSON file
         async function fetchQuizData() {
-            if (!isConfigured) {
-                updateStatus('Configure Google Sheets URL first');
-                return null;
-            }
-            
             try {
-                const response = await fetch(GOOGLE_SHEETS_READ_URL);
+                const response = await fetch(GITHUB_REPO_URL + '?t=' + Date.now()); // Add timestamp to prevent caching
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
-                return data;
+                return data.results || [];
             } catch (error) {
                 console.error('Error fetching data:', error);
-                updateStatus('Error connecting to data source');
-                return null;
+                updateStatus('Error loading data');
+                return [];
             }
         }
         
@@ -340,6 +304,11 @@
             document.getElementById('status').textContent = message;
         }
         
+        // Update status indicator
+        function updateStatusIndicator(message) {
+            document.getElementById('status-indicator').textContent = message;
+        }
+        
         // Create or update the bar chart
         function updateBarChart(typeCounts, total) {
             const container = document.getElementById('bars-container');
@@ -385,6 +354,8 @@
         
         // Main update function
         async function updateDashboard() {
+            updateStatusIndicator('Checking for updates...');
+            
             const rawData = await fetchQuizData();
             
             if (rawData) {
@@ -396,32 +367,28 @@
                 
                 if (processed.total > 0) {
                     updateStatus(`Last updated: ${new Date().toLocaleTimeString()}`);
+                    updateStatusIndicator(`${processed.total} responses received`);
                 } else {
                     updateStatus('Waiting for first responses...');
+                    updateStatusIndicator('Ready to receive results');
                 }
             }
         }
         
         // Initialize dashboard
         function initDashboard() {
-            checkConfiguration();
             updateDashboard();
             
-            // Update every 3 seconds
-            setInterval(updateDashboard, 3000);
+            // Update every 5 seconds
+            setInterval(updateDashboard, 5000);
             
-            // Show initial message
-            if (isConfigured) {
-                updateStatus('Ready! Waiting for quiz responses...');
-            } else {
-                updateStatus('Configure Google Sheets connection first');
-            }
+            updateStatus('Ready! Waiting for quiz responses...');
         }
         
         // Start the dashboard when page loads
         window.onload = initDashboard;
         
-        // Handle visibility change (pause updates when tab is hidden)
+        // Handle visibility change (update when tab becomes visible)
         document.addEventListener('visibilitychange', function() {
             if (document.visibilityState === 'visible') {
                 updateDashboard(); // Immediate update when tab becomes visible
