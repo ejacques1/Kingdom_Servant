@@ -291,8 +291,9 @@
     </div>
 
     <script>
-        // Google Sheets Configuration - Updated with correct URL
-        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwpDr8MuUzeXEIfTtaY_TKw_1ubCv5JCsKwnLhn7BVeA0fKMo3pa8vW1xmDPdtqMo71SQ/exec';
+        // GitHub Configuration - YOUR GITHUB TOKEN NEEDED HERE
+        const GITHUB_API_URL = 'https://api.github.com/repos/ejacques1/Kingdom_Servant/contents/quiz-results.json';
+        const GITHUB_TOKEN = 'YOUR_GITHUB_TOKEN_HERE'; // You'll need to add this
         
         const questions = [
             {
@@ -604,39 +605,62 @@
         let currentQuestion = 0;
         let answers = [];
 
-        // Improved function to submit data to Google Sheets
-        async function submitToDashboard(servantType) {
-            if (!GOOGLE_SHEETS_URL || GOOGLE_SHEETS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-                console.log('Google Sheets URL not configured yet');
-                return;
-            }
+        // Function to submit data to GitHub JSON file
+        async function submitToGitHub(servantType) {
+            console.log('Submitting result to GitHub:', servantType);
             
             try {
-                const data = {
+                // First, get the current file content
+                const getResponse = await fetch(GITHUB_API_URL, {
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (!getResponse.ok) {
+                    throw new Error('Failed to get current file');
+                }
+                
+                const fileData = await getResponse.json();
+                const currentContent = JSON.parse(atob(fileData.content));
+                
+                // Add new result
+                const newResult = {
                     timestamp: new Date().toISOString(),
                     type: servantType,
                     language: 'English'
                 };
                 
-                console.log('Attempting to submit data:', data);
+                currentContent.results.push(newResult);
+                currentContent.lastUpdated = new Date().toISOString();
                 
-                // Use a form-based approach for better compatibility
-                const formData = new FormData();
-                formData.append('timestamp', data.timestamp);
-                formData.append('type', data.type);
-                formData.append('language', data.language);
-                
-                const response = await fetch(GOOGLE_SHEETS_URL, {
-                    method: 'POST',
-                    body: formData
+                // Update the file
+                const updateResponse = await fetch(GITHUB_API_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: `Add quiz result: ${servantType}`,
+                        content: btoa(JSON.stringify(currentContent, null, 2)),
+                        sha: fileData.sha
+                    })
                 });
                 
-                console.log('Response status:', response.status);
-                console.log('Data submission completed');
+                if (updateResponse.ok) {
+                    console.log('Successfully submitted to GitHub');
+                    return true;
+                } else {
+                    throw new Error('Failed to update file');
+                }
                 
             } catch (error) {
-                console.error('Error submitting to dashboard:', error);
-                // Continue anyway - don't let submission errors break the quiz
+                console.error('Error submitting to GitHub:', error);
+                // Still show results even if submission fails
+                return false;
             }
         }
 
@@ -740,12 +764,12 @@
             const maxCount = Math.max(...Object.values(counts));
             const topTypes = Object.keys(counts).filter(key => counts[key] === maxCount);
 
-            // Submit to dashboard (in background)
+            // Submit to GitHub (in background)
             if (topTypes.length === 1) {
-                submitToDashboard(topTypes[0]);
+                submitToGitHub(topTypes[0]);
             } else {
                 // For ties, submit the first one alphabetically
-                submitToDashboard(topTypes.sort()[0]);
+                submitToGitHub(topTypes.sort()[0]);
             }
 
             displayResults(topTypes, counts);
