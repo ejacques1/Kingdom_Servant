@@ -270,7 +270,7 @@
                     <div class="progress-bar" id="progress-bar"></div>
                 </div>
                 <div class="progress-text">
-                    <span id="current-question">1</span> of <span id="total-questions">21</span>
+                    <span id="current-question">1</span> of <span id="total-questions">16</span>
                 </div>
                 
                 <!-- Questions will be generated here -->
@@ -297,15 +297,29 @@
         
         const questions = [
             {
-                question: "Your church wants to help the community. What do you think first?",
+                question: "Your perfect weekend is:",
                 options: [
-                    "What's our big goal? How does this fit what we want to do long-term?",
-                    "Who haven't we invited lately? Who might feel left out?",
-                    "What do people need to learn to make this work?",
-                    "This will be so good for everyone!",
-                    "When do we need this done? Who does what?",
-                    "What do we have? What do we still need?",
-                    "Where will we set up? What stuff do we need?"
+                    "Planning something exciting for the future",
+                    "Spending good time with family or friends",
+                    "Learning something new",
+                    "Doing something fun that makes you happy",
+                    "Cleaning your space or planning next week",
+                    "Working on something that helps others",
+                    "Building or fixing something with your hands",
+                    "Meeting new people and making connections"
+                ]
+            },
+            {
+                question: "People often come to you when they need:",
+                options: [
+                    "Someone to help them think in new ways",
+                    "Someone to listen and give support",
+                    "Hard things explained in simple ways",
+                    "Encouragement or confidence",
+                    "Help getting organized or making plans",
+                    "Help finding money or supplies",
+                    "Hands-on help getting something done",
+                    "An introduction to the right person"
                 ]
             },
             {
@@ -317,115 +331,8 @@
                     "Make a joke or say something positive",
                     "Take a break and make a clear plan",
                     "Help fix any money or supply problems",
-                    "Find a solution that works right now"
-                ]
-            },
-            {
-                question: "You go to a work conference. Which session sounds good?",
-                options: [
-                    "Making a 10-Year Plan for Your Work",
-                    "Building Better Relationships",
-                    "How to Talk So People Understand",
-                    "Staying Positive When Things Are Hard",
-                    "Getting Projects Done on Time",
-                    "How to Raise Money the Right Way",
-                    "Hands-On Workshop: Setting Up Your Space"
-                ]
-            },
-            {
-                question: "After church on Sunday, you usually:",
-                options: [
-                    "Think about new ideas you heard",
-                    "Check on people who seemed quiet or sad",
-                    "Talk about what the sermon means in real life",
-                    "Say something positive to others",
-                    "Think about how well everything went",
-                    "Notice what people might need help with",
-                    "Help clean up without being asked"
-                ]
-            },
-            {
-                question: "When you plan a family trip, you:",
-                options: [
-                    "Look up places and think about the fun you'll have",
-                    "Make sure everyone gets what they want",
-                    "Find activities and plan what you'll learn",
-                    "Focus on making good memories for everyone",
-                    "Make detailed schedules and backup plans",
-                    "Set the budget and find good deals",
-                    "Book everything and make packing lists"
-                ]
-            },
-            {
-                question: "At a dinner party where you don't know people, you:",
-                options: [
-                    "Share stories about cool projects you're working on",
-                    "Ask people about their families and lives",
-                    "End up explaining things you know about",
-                    "Make sure quiet people feel included",
-                    "Help the host organize activities",
-                    "Offer to bring something or help pay",
-                    "Help serve food or set things up"
-                ]
-            },
-            {
-                question: "Your perfect weekend is:",
-                options: [
-                    "Planning something exciting for the future",
-                    "Spending good time with family or friends",
-                    "Learning something new",
-                    "Doing something fun that makes you happy",
-                    "Cleaning your space or planning next week",
-                    "Working on something that helps others",
-                    "Building or fixing something with your hands"
-                ]
-            },
-            {
-                question: "When a friend tells you about a problem, you usually say:",
-                options: [
-                    "Have you thought about trying something totally different?",
-                    "How do you feel about all this?",
-                    "Let me help you figure out what's really going on",
-                    "This is hard, but I think things will get better",
-                    "What have you tried? What should you do next?",
-                    "Can I help? Do you need anything?",
-                    "Want me to come over and help you fix this?"
-                ]
-            },
-            {
-                question: "In group projects, people remember you as the one who:",
-                options: [
-                    "Came up with creative ideas",
-                    "Made sure everyone felt included",
-                    "Explained things when people were confused",
-                    "Kept everyone's spirits up when things got hard",
-                    "Kept track of deadlines and made sure things got done",
-                    "Found ways to get money or supplies",
-                    "Did a lot of the actual work"
-                ]
-            },
-            {
-                question: "When you see a homeless person, you first think:",
-                options: [
-                    "There has to be a better way to fix this problem",
-                    "I wonder what happened to them",
-                    "I wish people understood how hard this is",
-                    "I hope they know they matter and things can get better",
-                    "What help is out there? How can they get it?",
-                    "I should give them something",
-                    "Maybe I can help them with something right now"
-                ]
-            },
-            {
-                question: "Your favorite movies or books usually:",
-                options: [
-                    "Show people chasing big dreams or changing the world",
-                    "Focus on relationships and connections",
-                    "Teach you something new",
-                    "Have happy endings and hope",
-                    "Have good plots that all make sense",
-                    "Show people helping others",
-                    "Show people solving problems by taking action"
+                    "Find a solution that works right now",
+                    "Connect them with someone who handled this before"
                 ]
             },
             {
@@ -437,91 +344,8 @@
                     "Focus on building good relationships",
                     "Ask for clear job descriptions",
                     "Look for ways to do more than just your job",
-                    "Jump in and start working on real tasks"
-                ]
-            },
-            {
-                question: "Your friends say you're good at:",
-                options: [
-                    "Seeing possibilities others miss",
-                    "Making people feel cared for",
-                    "Making hard topics easy to understand",
-                    "Helping people feel better about themselves",
-                    "Keeping things running smoothly",
-                    "Being generous with your time and money",
-                    "Getting things done well and fast"
-                ]
-            },
-            {
-                question: "What bothers you most in groups?",
-                options: [
-                    "When people only talk about small details, not the big picture",
-                    "When people seem left out or disconnected",
-                    "When there's confusion that could be fixed",
-                    "When things get negative or people lose hope",
-                    "When things are messy or there's no clear plan",
-                    "When there are needs that no one is meeting",
-                    "When there's too much talking and not enough doing"
-                ]
-            },
-            {
-                question: "At a community festival, you'd like to:",
-                options: [
-                    "Plan next year's event and think of improvements",
-                    "Welcome visitors and help them feel at home",
-                    "Lead a class or show people how to do something",
-                    "Encourage volunteers and celebrate wins",
-                    "Organize volunteers and manage logistics",
-                    "Work the donation booth or get sponsors",
-                    "Set up booths or fix technical problems"
-                ]
-            },
-            {
-                question: "When you have to make a big decision, you:",
-                options: [
-                    "Think about your long-term dreams and goals",
-                    "Think about how it affects people you care about",
-                    "Do research and ask smart people for advice",
-                    "Try to stay positive and look for good outcomes",
-                    "Make lists of good and bad points",
-                    "Think about money and what you'll need",
-                    "Focus on what you can actually do"
-                ]
-            },
-            {
-                question: "Your ideal team meeting would:",
-                options: [
-                    "Focus on dreaming about the future and setting big goals",
-                    "Include time for everyone to share how they're doing",
-                    "Involve learning something new together",
-                    "Leave everyone feeling encouraged",
-                    "Have a clear plan and get specific things done",
-                    "Find ways the team can help others or support a cause",
-                    "End with clear action steps and jobs for everyone"
-                ]
-            },
-            {
-                question: "When you see a problem in your community, you:",
-                options: [
-                    "Think of a new solution that could change everything",
-                    "Reach out to people who are hurt by the problem",
-                    "Research to understand why it's happening",
-                    "Find ways to bring hope to people who are struggling",
-                    "Make a step-by-step plan to fix the problem",
-                    "Look for ways to give money, time, or supplies",
-                    "Start working on solutions right away"
-                ]
-            },
-            {
-                question: "People often come to you when they need:",
-                options: [
-                    "Someone to help them think differently",
-                    "Someone to listen and give emotional support",
-                    "Hard information explained in simple ways",
-                    "Motivation or confidence",
-                    "Help organizing their thoughts or plans",
-                    "Help finding resources or making connections",
-                    "Hands-on help getting something done"
+                    "Jump in and start working on real tasks",
+                    "Try to understand how departments work together"
                 ]
             },
             {
@@ -533,19 +357,151 @@
                     "Bring joy to you and others",
                     "Help you organize or create structure",
                     "Let you help causes you care about",
-                    "Involve building, creating, or finishing real projects"
+                    "Involve building, creating, or finishing real projects",
+                    "Expand your network and create new relationships"
                 ]
             },
             {
-                question: "Looking back on your life, you feel most proud when you:",
+                question: "Your friends say you're good at:",
                 options: [
-                    "Inspired others to do something meaningful",
-                    "Made a big difference in someone's life by caring",
-                    "Helped people understand something important",
-                    "Encouraged someone through a hard time",
-                    "Successfully organized something complex",
-                    "Gave resources that made a real difference",
-                    "Finished something concrete and lasting"
+                    "Seeing possibilities others miss",
+                    "Making people feel cared for",
+                    "Making hard topics easy to understand",
+                    "Helping people feel better about themselves",
+                    "Keeping things running smoothly",
+                    "Being generous with your time and money",
+                    "Getting things done well and fast",
+                    "Knowing who to call for any problem"
+                ]
+            },
+            {
+                question: "What bothers you most in groups?",
+                options: [
+                    "When people only talk about small details, not big ideas",
+                    "When people seem left out or disconnected",
+                    "When there's confusion that could be cleared up",
+                    "When things get negative or people lose hope",
+                    "When things are messy or there's no clear plan",
+                    "When there are needs that no one is meeting",
+                    "When there's too much talking and not enough doing",
+                    "When people work alone instead of working together"
+                ]
+            },
+            {
+                question: "When joining a committee or team, you naturally want to:",
+                options: [
+                    "Help set the long-term direction",
+                    "Make sure everyone feels included",
+                    "Share knowledge and train others",
+                    "Keep team spirit high",
+                    "Manage the details and keep things organized",
+                    "Find funding or get sponsors",
+                    "Handle the hands-on work",
+                    "Build partnerships with other groups"
+                ]
+            },
+            {
+                question: "When you see a homeless person, you first think:",
+                options: [
+                    "There has to be a better way to fix this problem",
+                    "I wonder what happened to them",
+                    "I wish people understood how hard this is",
+                    "I hope they know they matter and things can get better",
+                    "What help is out there? How can they get it?",
+                    "I should give them something",
+                    "Maybe I can help them with something right now",
+                    "I wonder which local organizations work with homeless people"
+                ]
+            },
+            {
+                question: "At a dinner party where you don't know people, you:",
+                options: [
+                    "Share stories about cool projects you're working on",
+                    "Ask people about their families and lives",
+                    "End up explaining things you know about",
+                    "Make sure quiet people feel included",
+                    "Help the host organize activities",
+                    "Offer to bring something or help pay",
+                    "Help serve food or set things up",
+                    "Introduce people who have things in common"
+                ]
+            },
+            {
+                question: "When you see a problem in your community, you:",
+                options: [
+                    "Think of a new solution that could change everything",
+                    "Reach out to people who are hurt by the problem",
+                    "Research to understand why it's happening",
+                    "Find ways to bring hope to people who are struggling",
+                    "Make a step-by-step plan to fix the problem",
+                    "Look for ways to give money, time, or supplies",
+                    "Start working on solutions right away",
+                    "Find out who else is working on this and how to help"
+                ]
+            },
+            {
+                question: "When you plan a family trip, you:",
+                options: [
+                    "Look up places and think about the fun you'll have",
+                    "Make sure everyone gets what they want",
+                    "Find activities and plan what you'll learn",
+                    "Focus on making good memories for everyone",
+                    "Make detailed schedules and backup plans",
+                    "Set the budget and find good deals",
+                    "Book everything and make packing lists",
+                    "Ask friends who've been there for tips"
+                ]
+            },
+            {
+                question: "When someone asks for help with a personal crisis, your first instinct is to:",
+                options: [
+                    "Help them see this as a chance for growth and change",
+                    "Listen deeply and make sure they feel supported",
+                    "Help them understand what's really happening",
+                    "Remind them of their strengths and that this will pass",
+                    "Help them create a step-by-step action plan",
+                    "Find practical resources or assistance they need",
+                    "Jump in and help solve the immediate problem",
+                    "Connect them with others who've faced similar challenges"
+                ]
+            },
+            {
+                question: "When a friend tells you about a problem, you usually say:",
+                options: [
+                    "Have you thought about trying something totally different?",
+                    "How do you feel about all this?",
+                    "Let me help you figure out what's really going on",
+                    "This is hard, but I think things will get better",
+                    "What have you tried? What should you do next?",
+                    "Can I help? Do you need anything?",
+                    "Want me to come over and help you fix this?",
+                    "I know someone who went through this same thing"
+                ]
+            },
+            {
+                question: "Your organization wants to help the community. What do you think first?",
+                options: [
+                    "What's our big goal? How does this fit our long-term plans?",
+                    "Who haven't we invited? Who might feel left out?",
+                    "What do people need to learn to make this work?",
+                    "This will be so good for everyone!",
+                    "When do we need this done? Who does what?",
+                    "What do we have? What do we still need?",
+                    "Where will we set up? What stuff do we need?",
+                    "Who else is doing this? Maybe we could work together?"
+                ]
+            },
+            {
+                question: "In group projects, people remember you as the one who:",
+                options: [
+                    "Came up with creative ideas",
+                    "Made sure everyone felt included",
+                    "Explained things when people were confused",
+                    "Kept everyone's spirits up when things got hard",
+                    "Kept track of deadlines and made sure things got done",
+                    "Found ways to get money or supplies",
+                    "Did a lot of the actual work",
+                    "Brought in outside experts or help when needed"
                 ]
             }
         ];
@@ -599,6 +555,13 @@
                 strengths: "Sets up events, manages tech, builds what's needed.",
                 thrive: "In action-oriented environments where they can work with their hands.",
                 differentiator: "Executes tasks, unlike the Organizer who manages logistics and plans."
+            },
+            H: {
+                name: "Connector",
+                definition: "Bridge-builder who links people and ideas across communities.",
+                strengths: "Networks people, facilitates relationships, cross-pollinates ideas, makes strategic introductions.",
+                thrive: "In diverse environments where they can build bridges and create synergies.",
+                differentiator: "Creates strategic connections and partnerships, unlike the Shepherd who nurtures within existing community."
             }
         };
 
@@ -754,8 +717,8 @@
         }
 
         function calculateResults() {
-            // Count answers
-            const counts = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0 };
+            // Count answers - now includes H for Connector
+            const counts = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0, H: 0 };
             answers.forEach(answer => {
                 if (answer) counts[answer]++;
             });
@@ -883,7 +846,7 @@
                 </div>
                 
                 <div class="reference-note">
-                    <strong>Reference Note:</strong> This quiz is adapted from two established traditions: <em>Spiritual Gifts Inventories</em>, long used in Christian communities, and <em>Ikigai</em>, the Japanese framework for finding one's 'reason for being.' It has been simplified into the 7 Kingdom Servant Types to help people identify their strengths, understand their value, and see how they best thrive in a community setting.
+                    <strong>Reference Note:</strong> This quiz is adapted from two established traditions: <em>Spiritual Gifts Inventories</em>, long used in Christian communities, and <em>Ikigai</em>, the Japanese framework for finding one's 'reason for being.' It has been expanded to include 8 Kingdom Servant Types to help people identify their strengths, understand their value, and see how they best thrive in a community setting.
                 </div>
             `;
 
